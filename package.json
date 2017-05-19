@@ -1,0 +1,27 @@
+{
+  "name": "citytaxes",
+  "version": "1.0.0",
+  "description": "A site for estimating where your city taxes go!",
+  "main": "setup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node setup.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unityrichwood/citytaxes.git"
+  },
+  "author": "Unity Richwood",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/unityrichwood/citytaxes/issues"
+  },
+  "homepage": "https://github.com/unityrichwood/citytaxes#readme",
+  "devDependencies": {
+    "bower": "^1.8.0"
+  },
+  "dependencies": {
+    "bower": "^1.8.0",
+    "wiredep": "^4.0.0"
+  }
+}

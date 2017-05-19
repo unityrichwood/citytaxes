@@ -1,0 +1,319 @@
+<html>
+
+<head>
+    <title>Your taxes at work</title>
+    <!-- bower:js -->
+    <script src="js/vendor/chart.js/dist/Chart.js"></script>
+    <!-- endbower -->
+    <script>
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                } else {
+                    return 250000
+                }
+            }
+            return (false);
+        }
+        Number.prototype.formatMoney = function (c, d, t) {
+            var n = this,
+                c = isNaN(c = Math.abs(c)) ? 2 : c,
+                d = d == undefined ? "." : d,
+                t = t == undefined ? "," : t,
+                s = n < 0 ? "-" : "",
+                i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                j = (j = i.length) > 3 ? j % 3 : 0;
+            return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d +
+                Math.abs(n - i).toFixed(c).slice(2) : "");
+        };
+
+        var home_value, Richwood, Velasco, Port, BC, BISD, County, Road, Police, PublicWorks, Debt, Fire, Other, Code,
+            RichwoodPer, PoliceM, PublicWorksM, DebtM, FireM, OtherM, CodeM, efrate;
+
+        function ToggleSwitch() {
+            var x = document.getElementById('Results');
+            var y = document.getElementById('Setup')
+            if (x.style.display === 'none') {
+                x.style.display = 'block'
+                y.style.display = 'none';
+            } else {
+                x.style.display = 'none'
+                y.style.display = 'block';
+            }
+        }
+    </script>
+    <script>
+        home_value = getQueryVariable("home_value");
+
+        Richwood = (home_value - 25000) * .00672580;
+        Velasco = (home_value * .8) * .00091501;
+        Port = (home_value * .8) * .000401;
+        BC = (home_value - 25000) * .8 * .00285040;
+        BISD = (home_value - 25000) * .9 * .012553;
+        County = (home_value) * .8 * .00457405;
+        Road = (home_value - 3000) * .8 * .0006;
+        RichwoodPer = 100 * Richwood / (Richwood + Velasco + Port + BC + BISD + County + Road);
+
+        Police = (839555 / 1583684) * Richwood;
+        PoliceM = Police / 12;
+        PublicWorks = (283390 / 1583684) * Richwood;
+        PublicWorksM = PublicWorks / 12;
+        Debt = (171394 / 1583684) * Richwood;
+        DebtM = Debt / 12;
+        Fire = (165250 / 1583684) * Richwood;
+        FireM = Fire / 12;
+        Other = (63641 / 1583684) * Richwood;
+        OtherM = Other / 12;
+        Code = (60454 / 1583684) * Richwood;
+        CodeM = Code / 12;
+        efrate = Richwood / home_value * 100000;
+        pdvphone = Math.round(100 * (148 - PoliceM)) / 100;
+        fdvphone = Math.round(100 * (148 - FireM)) / 100;
+    </script>
+</head>
+
+<body>
+    <!-- <button onclick="ToggleSwitch()">Toggle Display</button> -->
+
+
+
+
+    <h1>
+        <script>
+            document.write("Your $" + home_value + " Home");
+        </script>
+    </h1><br />
+
+    <div id="Results">
+        <script>
+            document.write("Your Richwood taxes are $" + Richwood.formatMoney(2, '.', ',') + ", only " + Math.round(
+                    RichwoodPer) + "% of your property taxes and an effective tax rate of " + Math.round(efrate) /
+                1000 + "% of your property value.");
+        </script><br />
+        <h2>Let's break that down:</h2>
+        <table>
+            <tr>
+                <td><b>Department</b></td>
+                <td><b>Annual&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+                <td><b>Monthly</b></td>
+            </tr>
+            <tr>
+                <td>Police: </td>
+                <td>
+                    <script>
+                        document.write("$" + Police.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + PoliceM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Public Works and Parks: </td>
+                <td>
+                    <script>
+                        document.write("$" + PublicWorks.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + PublicWorksM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Debt Service: </td>
+                <td>
+                    <script>
+                        document.write("$" + Debt.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + DebtM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Fire/EMS: </td>
+                <td>
+                    <script>
+                        document.write("$" + Fire.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + FireM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Code Enforcement: </td>
+                <td>
+                    <script>
+                        document.write("$" + Code.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + CodeM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Other: </td>
+                <td>
+                    <script>
+                        document.write("$" + Other.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + OtherM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <h4>For comparison, the average American spends $148 monthly on their phone bill<sup><a href="#phone">[1]</a></sup>,
+            $103.10 on their cable bill<sup><a href="#cable">[2]</a></sup>, $138 on their electric bill<sup><a href="#elec">[3]</a></sup>            and $135 on car insurance<sup><a href="#car">[4]</a></sup></h4>
+        <h3>
+            <script>
+                if (pdvphone > 0) {
+                    document.write("You likely spend about $" + pdvphone +
+                        " more on your cell phone per month than on police protection, and about $" + fdvphone +
+                        " more on your phone than on fire and EMS!");
+                } else {
+                    if (fdvphone > 0) {
+                        document.write("You likely spend about $" + fdvphone +
+                            " more on your cell phone per month than on fire and EMS!");
+                    }
+                }
+            </script>
+        </h3>
+        <br /><br /><br />
+        <h3>Where do the rest of my property taxes go?</h3>
+        <table>
+            <tr>
+                <td>
+                    Richwood</td>
+                <td>
+                    <script>
+                        document.write("$" + Richwood.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Velasco Drainage </td>
+                <td>
+                    <script>
+                        document.write("$" + Velasco.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Port Freeport </td>
+                <td>
+                    <script>
+                        document.write("$" + Port.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazosport College </td>
+                <td>
+                    <script>
+                        document.write("$" + BC.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazosport ISD </td>
+                <td>
+                    <script>
+                        document.write("$" + BISD.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazoria County </td>
+                <td>
+                    <script>
+                        document.write("$" + County.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazoria County Roads </td>
+                <td>
+                    <script>
+                        document.write("$" + Road.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <div id="Setup" align="center">
+            <form align="center" action="yourtaxes1.html">
+                <input type="submit" align="center" value="Recalculate!">
+            </form>
+            My Chart: <br />
+            <canvas id="myChart" width="400" height="400"></canvas>
+            <script>
+                var ctx = document.getElementById("myChart");
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+            <hr />
+            <a name="phone">1 - Fortune Magazine 2016</a><br />
+            <a name="cable">2 - JD Power Report 2014</a><br />
+            <a name="elect">3 - US Energy Information Administration</a><br />
+            <a name="car">4 - ValuePenguin.com & Quadrant Information Systems</a><br />
+        </div>
+</body>
+
+</html>
