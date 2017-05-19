@@ -1,0 +1,356 @@
+<html>
+
+<head>
+    <script>
+// Everything the end user should need to edit is in this list. 
+
+var Richwood = {exemption: 25000, localOption: 0, taxRate: .67258};
+var Velasco = {exemption: 0, localOption:.2,taxRate:.091501 };
+var Port = {exemption:0, localOption:.2, taxRate:.0401};
+var BC = {exemption:25000, localOption:.2, taxRate:.285040};
+var BISD = {exemption:25000, localOption:.1, taxRate:1.2553};
+var BC = {exemption:0, localOption:0, taxRate: .457405};
+var Road = {exemption:3000, localOption:.2, taxRate:.06};
+var cityServices = {police:839555, publicWorks: 283390, debt:171394, fireEMS: 165250, other:63641, codeEnforcement: 60454, total:0}; //Leave total as 0, it is calculated automatically
+
+// I create an array of arrays "Entities" to easily find the total tax burden. If another taxing entity is added, it must be incldued here.
+var entities = {Richwood, Velasco, Port, BC, BISD, County, Road};
+
+// This loop finds the total  city Budget
+for (i=0; i<cityServices.length-1; i++) {
+cityServices{total}=cityServices{total}+cityServices{i};
+}
+
+// This pulls the value of the house from the URL, or plugs in 250000
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i = 0; i < vars.length; i++) {
+                var pair = vars[i].split("=");
+                if (pair[0] == variable) {
+                    return pair[1];
+                } else {
+                    return 250000
+                }
+            }
+            return (false);
+        }
+
+// This takes a number, rounds it and displays it as money with decimal and comma
+        Number.prototype.formatMoney = function (c, d, t) {
+            var n = this,
+                c = isNaN(c = Math.abs(c)) ? 2 : c,
+                d = d == undefined ? "." : d,
+                t = t == undefined ? "," : t,
+                s = n < 0 ? "-" : "",
+                i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+                j = (j = i.length) > 3 ? j % 3 : 0;
+            return "$" + s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d +
+                Math.abs(n - i).toFixed(c).slice(2) : "");
+        };
+
+// This takes a number and divides it by 12, to find the monthly cost (such as Richwood.perMonth). Just for beauty's sake.
+Number.prototype.perMonth= function () {
+    var n = this,
+    return n/12;
+}
+
+//
+//
+// Find the annual tax levy for each agency
+//
+// I am not sure if an object of an object can be taken this way. Will test in the morning. 
+//
+//
+
+var home_value = getQueryVariable("home_value");
+var taxLevy{total}=0; 
+
+for(i=0;i<entities.length-1;i++){
+taxLevy{i}=(home_value - entities{i}{exemption})*(1-entities{i}{localOption})*entities{i}{taxRate};
+taxLevy{total}=taxLevy{total}+taxLevy{i};
+}
+
+// Some miscellaneous calculations
+var RichwoodPer = taxLevy{0}/taxLevy{total}; //Percentage of property taxes paid to Richwood
+var effectiveRate = Math.round(taxLevy{0} / home_value * 1000000)/10000;  // Effective tax rate for Richwood
+var pdvphone = Math.round(100 * (148 - cityServices{police}.perMonth)) / 100; // Compare PD costs to cost of average cell phone
+var fdvphone = Math.round(100 * (148 - cityServices{fireEMS}.perMonth)) / 100;
+    </script>
+</head>
+
+<body>
+
+    <h1>
+        <script>
+            document.write("Your $" + home_value + " Home");
+        </script>
+    </h1><br />
+
+    <div id="Results">
+        <script>
+            document.write("Your Richwood taxes are $" + taxLevy{0}.formatMoney + ", only " + Math.round(
+                    RichwoodPer) + "% of your property taxes and an effective tax rate of " + Math.round(effectiveRate) /
+                1000 + "% of your property value.");
+        </script><br />
+        <h2>Let's break that down:</h2>
+
+        <!-- This table needs to be redone as a loop, but I do not know how to get HTML to output correctly from document.write. I am stopping here for the night. -->
+        
+        <table>
+            <tr>
+                <td><b>Department</b></td>
+                <td><b>Annual&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+                <td><b>Monthly</b></td>
+            </tr>
+            <tr>
+                <td>Police: </td>
+                <td>
+                    <script>
+                        document.write("$" + Police.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + PoliceM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Public Works and Parks: </td>
+                <td>
+                    <script>
+                        document.write("$" + PublicWorks.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + PublicWorksM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Debt Service: </td>
+                <td>
+                    <script>
+                        document.write("$" + Debt.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + DebtM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Fire/EMS: </td>
+                <td>
+                    <script>
+                        document.write("$" + Fire.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + FireM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Code Enforcement: </td>
+                <td>
+                    <script>
+                        document.write("$" + Code.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + CodeM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>Other: </td>
+                <td>
+                    <script>
+                        document.write("$" + Other.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+                <td>
+                    <script>
+                        document.write("$" + OtherM.formatMoney(2, '.', ','));
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <h4>For comparison, the average American spends $148 monthly on their phone bill<sup><a href="#phone">[1]</a></sup>,
+            $103.10 on their cable bill<sup><a href="#cable">[2]</a></sup>, $138 on their electric bill<sup><a href="#elec">[3]</a></sup>            and $135 on car insurance<sup><a href="#car">[4]</a></sup></h4>
+        <h3>
+            <script>
+                if (pdvphone > 0) {
+                    document.write("You likely spend about $" + pdvphone +
+                        " more on your cell phone per month than on police protection, and about $" + fdvphone +
+                        " more on your phone than on fire and EMS!");
+                } else {
+                    if (fdvphone > 0) {
+                        document.write("You likely spend about $" + fdvphone +
+                            " more on your cell phone per month than on fire and EMS!");
+                    }
+                }
+            </script>
+        </h3>
+        <br /><br /><br />
+        <h3>Where do the rest of my property taxes go?</h3>
+        <table>
+            <tr>
+                <td>
+                    Richwood</td>
+                <td>
+                    <script>
+                        document.write("$" + Richwood.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Velasco Drainage </td>
+                <td>
+                    <script>
+                        document.write("$" + Velasco.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Port Freeport </td>
+                <td>
+                    <script>
+                        document.write("$" + Port.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazosport College </td>
+                <td>
+                    <script>
+                        document.write("$" + BC.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazosport ISD </td>
+                <td>
+                    <script>
+                        document.write("$" + BISD.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazoria County </td>
+                <td>
+                    <script>
+                        document.write("$" + County.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Brazoria County Roads </td>
+                <td>
+                    <script>
+                        document.write("$" + Road.formatMoney(2, '.', ','))
+                    </script>
+                </td>
+            </tr>
+        </table>
+        <div id="Setup" align="center">
+            <form align="center" action="yourtaxes1.html">
+                <input type="submit" align="center" value="Recalculate!">
+            </form>
+            Tax Utilization: <br />
+            
+            <script>
+              
+              var data = {
+    labels: [
+        "Richwood",
+        "Velasco Drainage",
+        "Port Freeport",
+        "BISD",
+        "Brazosport College",
+        "Brazoria County",
+        "Brazoria County Roads"
+    ],
+    datasets: [
+        {
+            data: [Richwood, Velasco, Port, BISD, BC, County, Road],
+            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+            ],
+            hoverBackgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+            ]
+        }]
+};
+var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: data
+});
+ </script>
+
+            
+<script>
+   var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: data,
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});     
+var data = {
+    labels: [
+        "Red",
+        "Blue",
+        "Yellow"
+    ],
+    datasets: [
+        {
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+};
+</script>
+<canvas id="myPieChart" width="400" height="400"></canvas>
+
+            <hr />
+            <a name="phone">1 - Fortune Magazine 2016</a><br />
+            <a name="cable">2 - JD Power Report 2014</a><br />
+            <a name="elect">3 - US Energy Information Administration</a><br />
+            <a name="car">4 - ValuePenguin.com & Quadrant Information Systems</a><br />
+        </div>
+</body>
+
+</html>

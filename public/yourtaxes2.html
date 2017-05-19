@@ -270,6 +270,7 @@
             Tax Utilization: <br />
             
             <script>
+              
               var data = {
     labels: [
         "Richwood",
@@ -307,8 +308,41 @@ var myPieChart = new Chart(ctx,{
 });
  </script>
 
-            <canvas id="myPieChart" width="400" height="400"></canvas>
-                       
+            
+<script>
+   var myPieChart = new Chart(ctx,{
+    type: 'pie',
+    data: data,
+    options: {
+        animation:{
+            animateScale:true
+        }
+    }
+});     
+var data = {
+    labels: [
+        "Red",
+        "Blue",
+        "Yellow"
+    ],
+    datasets: [
+        {
+            data: [300, 50, 100],
+            backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ],
+            hoverBackgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                "#FFCE56"
+            ]
+        }]
+};
+</script>
+<canvas id="myPieChart" width="400" height="400"></canvas>
+
             <hr />
             <a name="phone">1 - Fortune Magazine 2016</a><br />
             <a name="cable">2 - JD Power Report 2014</a><br />
